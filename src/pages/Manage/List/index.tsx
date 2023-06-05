@@ -1,6 +1,7 @@
 import React, { memo, useState } from 'react'
 import styles from './List.module.scss'
 import { useTitle } from 'ahooks'
+import { Typography } from 'antd'
 import QuestionCard from '@/components/QuestionCard'
 
 import type { FC, ReactNode } from 'react'
@@ -52,6 +53,8 @@ const rawQuestionList = [
   }
 ]
 
+const { Title } = Typography
+
 const List: FC<IProps> = () => {
   useTitle('我的问卷')
   const [questionList, setQuestionList] = useState(rawQuestionList)
@@ -60,7 +63,7 @@ const List: FC<IProps> = () => {
     <>
       <div className={styles.header}>
         <div className={styles.left}>
-          <h3>我的问卷</h3>
+          <Title level={3}>我的问卷</Title>
         </div>
         <div className={styles.right}>搜索</div>
       </div>

@@ -1,13 +1,14 @@
 import React from 'react'
 import styles from './QuestionCard.module.scss'
 import { useNavigate, Link } from 'react-router-dom'
-import { Button, Space, Divider, Tag } from 'antd'
+import { Button, Space, Divider, Tag, Popconfirm, Modal, message } from 'antd'
 import {
   EditOutlined,
   PieChartOutlined,
   StarOutlined,
   CopyOutlined,
-  DeleteOutlined
+  DeleteOutlined,
+  ExclamationCircleOutlined
 } from '@ant-design/icons'
 
 import type { FC, ReactNode } from 'react'
@@ -22,6 +23,13 @@ interface IProps {
   createAt: string
 }
 
+const { confirm } = Modal
+
+/**
+ * @desc 问卷卡片组件
+ * @Author bk0x114
+ * @Date 2023-04-06 00:02:38
+ */
 const QuestionCard: FC<IProps> = ({
   _id,
   title,
@@ -31,6 +39,23 @@ const QuestionCard: FC<IProps> = ({
   createAt
 }) => {
   const nav = useNavigate()
+
+  /**
+   * @desc 删除问卷
+   * @Author bk0x114
+   * @Date 2023-04-05 23:58:30
+   */
+  const handleDeleteQuestion = () => {
+    confirm({
+      title: '确定删除这个问卷吗？',
+      icon: <ExclamationCircleOutlined rev />,
+      okText: '确定',
+      cancelText: '取消',
+      onOk: async () => {
+        await message.info('执行删除')
+      }
+    })
+  }
 
   return (
     <>
@@ -48,6 +73,7 @@ const QuestionCard: FC<IProps> = ({
               </Space>
             </Link>
           </div>
+
           <div className={styles.right}>
             <Space>
               {isPublished ? (
@@ -60,7 +86,9 @@ const QuestionCard: FC<IProps> = ({
             </Space>
           </div>
         </div>
+
         <Divider style={{ margin: '12px' }} />
+
         <div className={styles['button-container']}>
           <div className={styles.left}>
             <Space>
@@ -84,17 +112,29 @@ const QuestionCard: FC<IProps> = ({
               </Button>
             </Space>
           </div>
+
           <div className={styles.right}>
             <Space>
               <Button size="small" icon={<StarOutlined rev />}>
                 {isStart ? '取消标记' : '标记'}
               </Button>
 
-              <Button size="small" icon={<CopyOutlined rev />}>
-                复制
-              </Button>
+              <Popconfirm
+                title="确定复制这个问卷吗？"
+                okText="确定"
+                cancelText="取消"
+                onConfirm={() => alert('执行复制')}
+              >
+                <Button size="small" icon={<CopyOutlined rev />}>
+                  复制
+                </Button>
+              </Popconfirm>
 
-              <Button size="small" icon={<DeleteOutlined rev />}>
+              <Button
+                size="small"
+                icon={<DeleteOutlined rev />}
+                onClick={handleDeleteQuestion}
+              >
                 删除
               </Button>
             </Space>
