@@ -1,24 +1,35 @@
 import React from 'react'
-import logo from './logo.svg'
-import './App.css'
 
 function App() {
+  const questionList = [
+    { id: 'q1', title: '问卷1', isPublish: false },
+    { id: 'q2', title: '问卷2', isPublish: true },
+    { id: 'q3', title: '问卷3', isPublish: false },
+    { id: 'q3', title: '问卷4', isPublish: true }
+  ]
+
+  const edit = (id: string) => {
+    console.log('编辑', id)
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1>问卷列表页</h1>
+      <div>
+        {questionList.map(({ id, title, isPublish }) => (
+          <div key={id}>
+            <strong>{title}</strong>
+            &nbsp;
+            {isPublish ? (
+              <span style={{ color: 'green' }}>已发布</span>
+            ) : (
+              <span style={{ color: 'red' }}>未发布</span>
+            )}
+            &nbsp;
+            <button onClick={() => edit(id)}>编辑问卷</button>
+          </div>
+        ))}
+      </div>
     </div>
   )
 }
