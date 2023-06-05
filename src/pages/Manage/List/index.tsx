@@ -65,11 +65,12 @@ const List: FC<IProps> = () => {
         <div className={styles.right}>搜索</div>
       </div>
       <div className={styles.content}>
-        {questionList.map(({ _id, ...rest }) => (
-          <QuestionCard key={_id} {...rest} />
-        ))}
+        {questionList.length > 0 &&
+          questionList.map(({ _id, ...rest }) => (
+            <QuestionCard key={_id} _id={_id} {...rest} />
+          ))}
       </div>
-      <div className={styles.footer}>footer</div>
+      <div className={styles.footer}></div>
     </>
   )
 }

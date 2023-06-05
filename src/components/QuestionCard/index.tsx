@@ -1,11 +1,20 @@
 import React from 'react'
 import styles from './QuestionCard.module.scss'
+import { useNavigate, Link } from 'react-router-dom'
+import { Button, Space, Divider, Tag } from 'antd'
+import {
+  EditOutlined,
+  PieChartOutlined,
+  StarOutlined,
+  CopyOutlined,
+  DeleteOutlined
+} from '@ant-design/icons'
 
 import type { FC, ReactNode } from 'react'
 
 interface IProps {
   children?: ReactNode
-  _id?: string
+  _id: string
   title: string
   isPublished: boolean
   isStart: boolean
@@ -14,39 +23,81 @@ interface IProps {
 }
 
 const QuestionCard: FC<IProps> = ({
+  _id,
   title,
   isPublished,
   isStart,
   answerCount,
   createAt
 }) => {
+  const nav = useNavigate()
+
   return (
     <>
       <div className={styles.container}>
         <div className={styles.title}>
           <div className={styles.left}>
-            <a href="#">{title}</a>
+            <Link
+              to={
+                isPublished ? `/question/stat/${_id}` : `/question/edit/${_id}`
+              }
+            >
+              <Space>
+                {isStart && <StarOutlined style={{ color: 'yellow' }} rev />}
+                {title}
+              </Space>
+            </Link>
           </div>
           <div className={styles.right}>
-            {isPublished ? (
-              <span style={{ color: 'green' }}>已发布</span>
-            ) : (
-              <span>未发布</span>
-            )}
-            &nbsp;
-            <span>答卷: {answerCount}</span>
-            <span>{createAt}</span>
+            <Space>
+              {isPublished ? (
+                <Tag color="processing">已发布</Tag>
+              ) : (
+                <Tag>未发布</Tag>
+              )}
+              <span>答卷: {answerCount}</span>
+              <span>{createAt}</span>
+            </Space>
           </div>
         </div>
+        <Divider style={{ margin: '12px' }} />
         <div className={styles['button-container']}>
           <div className={styles.left}>
-            <button>编辑问卷</button>
-            <button>数据统计</button>
+            <Space>
+              <Button
+                type="text"
+                size="small"
+                icon={<EditOutlined rev />}
+                onClick={() => nav(`/question/list/${_id}`)}
+              >
+                编辑问卷
+              </Button>
+
+              <Button
+                type="text"
+                size="small"
+                icon={<PieChartOutlined rev />}
+                onClick={() => nav(`/question/stat/${_id}`)}
+                disabled={!isPublished}
+              >
+                数据统计
+              </Button>
+            </Space>
           </div>
           <div className={styles.right}>
-            <button>标记</button>
-            <button>复制</button>
-            <button>删除</button>
+            <Space>
+              <Button size="small" icon={<StarOutlined rev />}>
+                {isStart ? '取消标记' : '标记'}
+              </Button>
+
+              <Button size="small" icon={<CopyOutlined rev />}>
+                复制
+              </Button>
+
+              <Button size="small" icon={<DeleteOutlined rev />}>
+                删除
+              </Button>
+            </Space>
           </div>
         </div>
       </div>

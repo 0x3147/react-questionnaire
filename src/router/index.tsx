@@ -56,7 +56,7 @@ const router = createBrowserRouter([
     ]
   },
   {
-    path: 'question',
+    path: '/question',
     element: <QuestionLayout />,
     children: [
       {
@@ -72,3 +72,8 @@ const router = createBrowserRouter([
 ])
 
 export default router
+
+export const HOME_PATH = '/'
+export const LOGIN_PATH = '/login'
+export const REGISTER_PATH = '/register'
+export const MANAGE_INDEX_PATH = '/manage/list'

@@ -1,5 +1,8 @@
 import React, { memo } from 'react'
-import { useNavigate, Link } from 'react-router-dom'
+import styles from './Home.module.scss'
+import { useNavigate } from 'react-router-dom'
+import { Button, Typography } from 'antd'
+import { MANAGE_INDEX_PATH } from '@/router'
 
 import type { FC, ReactNode } from 'react'
 
@@ -7,18 +10,23 @@ interface IProps {
   children?: ReactNode
 }
 
+const { Title, Paragraph } = Typography
+
 const Home: FC<IProps> = () => {
   const nav = useNavigate()
-  const clickHandler = () => {
-    nav('/login')
-  }
 
   return (
-    <div>
-      <p>home</p>
-      <div>
-        <button onClick={clickHandler}>登录</button>
-        <Link to="/register?a=10">注册</Link>
+    <div className={styles.container}>
+      <div className={styles.info}>
+        <Title>开启一个问卷调查 | 或发动一个在线投票</Title>
+        <Paragraph>
+          已累计创建问卷 1000 份，发布问卷 75 份，已收到完成的答卷 800份
+        </Paragraph>
+        <div>
+          <Button type="primary" onClick={() => nav(MANAGE_INDEX_PATH)}>
+            开始使用
+          </Button>
+        </div>
       </div>
     </div>
   )
