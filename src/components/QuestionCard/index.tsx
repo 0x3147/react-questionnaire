@@ -51,6 +51,7 @@ const QuestionCard: FC<IProps> = ({
       icon: <ExclamationCircleOutlined rev />,
       okText: '确定',
       cancelText: '取消',
+      content: '删除后可在回收站找回',
       onOk: async () => {
         await message.info('执行删除')
       }
@@ -96,7 +97,7 @@ const QuestionCard: FC<IProps> = ({
                 type="text"
                 size="small"
                 icon={<EditOutlined rev />}
-                onClick={() => nav(`/question/list/${_id}`)}
+                onClick={() => nav(`/question/edit/${_id}`)}
               >
                 编辑问卷
               </Button>
