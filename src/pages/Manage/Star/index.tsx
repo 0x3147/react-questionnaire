@@ -1,7 +1,8 @@
-import React, { memo, useState } from 'react'
+import React, { memo } from 'react'
 import styles from '../List/List.module.scss'
 import { useTitle } from 'ahooks'
-import { Typography, Empty } from 'antd'
+import { Typography, Empty, Spin } from 'antd'
+import useLoadQuestionListData from '@/hooks/useLoadQuestionListData'
 import QuestionCard from '@/components/QuestionCard'
 import ListSearch from '@/components/ListSearch'
 
@@ -13,33 +14,6 @@ interface IProps {
 
 const { Title } = Typography
 
-const rawQuestionList = [
-  {
-    _id: 'q1',
-    title: '问卷1',
-    isPublished: false,
-    isStart: true,
-    answerCount: 5,
-    createAt: '2021-01-01'
-  },
-  {
-    _id: 'q2',
-    title: '问卷2',
-    isPublished: false,
-    isStart: true,
-    answerCount: 6,
-    createAt: '2021-01-01'
-  },
-  {
-    _id: 'q3',
-    title: '问卷3',
-    isPublished: false,
-    isStart: true,
-    answerCount: 7,
-    createAt: '2021-01-01'
-  }
-]
-
 /**
  * @desc 标记问卷列表页
  * @Author bk0x114
@@ -48,7 +22,8 @@ const rawQuestionList = [
 const Star: FC<IProps> = () => {
   useTitle('已标记的问卷')
 
-  const [questionList, setQuestionList] = useState(rawQuestionList)
+  const { data, loading } = useLoadQuestionListData({ isStar: true })
+  const { list = [] } = data || {}
 
   return (
     <>
@@ -61,13 +36,17 @@ const Star: FC<IProps> = () => {
         </div>
       </div>
       <div className={styles.content}>
-        {questionList.length === 0 && (
+        {!loading && list.length === 0 && (
           <Empty description="您还没有标记问卷哦~" />
         )}
-        {questionList.length > 0 &&
-          questionList.map(({ _id, ...rest }) => (
-            <QuestionCard key={_id} _id={_id} {...rest} />
-          ))}
+        {loading && (
+          <div style={{ textAlign: 'center' }}>
+            <Spin />
+          </div>
+        )}
+        {!loading &&
+          list.length > 0 &&
+          list.map((item: any) => <QuestionCard key={item._id} {...item} />)}
       </div>
       <div className={styles.footer}>分页</div>
     </>

@@ -18,9 +18,9 @@ interface IProps {
   _id: string
   title: string
   isPublished: boolean
-  isStart: boolean
+  isStar: boolean
   answerCount: number
-  createAt: string
+  createdAt: string
 }
 
 const { confirm } = Modal
@@ -34,9 +34,9 @@ const QuestionCard: FC<IProps> = ({
   _id,
   title,
   isPublished,
-  isStart,
+  isStar,
   answerCount,
-  createAt
+  createdAt
 }) => {
   const nav = useNavigate()
 
@@ -69,7 +69,7 @@ const QuestionCard: FC<IProps> = ({
               }
             >
               <Space>
-                {isStart && (
+                {isStar && (
                   <StarOutlined style={{ color: 'yellow' }} rev={undefined} />
                 )}
                 {title}
@@ -85,7 +85,7 @@ const QuestionCard: FC<IProps> = ({
                 <Tag>未发布</Tag>
               )}
               <span>答卷: {answerCount}</span>
-              <span>{createAt}</span>
+              <span>{createdAt}</span>
             </Space>
           </div>
         </div>
@@ -123,7 +123,7 @@ const QuestionCard: FC<IProps> = ({
                 type="text"
                 icon={<StarOutlined rev={undefined} />}
               >
-                {isStart ? '取消标记' : '标记'}
+                {isStar ? '取消标记' : '标记'}
               </Button>
 
               <Popconfirm

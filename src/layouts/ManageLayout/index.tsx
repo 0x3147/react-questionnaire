@@ -1,7 +1,9 @@
 import React, { memo } from 'react'
 import styles from './ManageLayout.module.scss'
 import { Outlet, useNavigate, useLocation } from 'react-router-dom'
-import { Button, Space, Divider } from 'antd'
+import { useRequest } from 'ahooks'
+import { createQuestionsService } from '@/services/question'
+import { Button, Space, Divider, message } from 'antd'
 import {
   BarsOutlined,
   DeleteOutlined,
@@ -15,9 +17,22 @@ interface IProps {
   children?: ReactNode
 }
 
+/**
+ * @desc 内容布局页
+ * @Author bk0x114
+ * @Date 2023-04-06 19:05:59
+ */
 const ManageLayout: FC<IProps> = () => {
   const nav = useNavigate()
   const { pathname } = useLocation()
+
+  const { loading, run: handleCreate } = useRequest(createQuestionsService, {
+    manual: true,
+    onSuccess: async (res) => {
+      nav(`/question/edit/${res.id}`)
+      message.success('创建成功')
+    }
+  })
 
   return (
     <div className={styles.container}>
@@ -27,6 +42,8 @@ const ManageLayout: FC<IProps> = () => {
             type="primary"
             size="large"
             icon={<PlusOutlined rev={undefined} />}
+            onClick={handleCreate}
+            disabled={loading}
           >
             创建问卷
           </Button>
