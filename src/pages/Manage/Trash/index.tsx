@@ -12,6 +12,7 @@ import {
 } from 'antd'
 import { ExclamationCircleOutlined } from '@ant-design/icons'
 import { useTitle } from 'ahooks'
+import ListSearch from '@/components/ListSearch'
 
 import type { FC, ReactNode } from 'react'
 
@@ -145,7 +146,9 @@ const Trash: FC<IProps> = () => {
         <div className={styles.left}>
           <Title level={3}>问卷回收</Title>
         </div>
-        <div className={styles.right}>搜索</div>
+        <div className={styles.right}>
+          <ListSearch />
+        </div>
       </div>
       <div className={styles.content}>
         {questionList.length === 0 && (

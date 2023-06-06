@@ -116,7 +116,7 @@ const QuestionCard: FC<IProps> = ({
 
           <div className={styles.right}>
             <Space>
-              <Button size="small" icon={<StarOutlined rev />}>
+              <Button size="small" type="text" icon={<StarOutlined rev />}>
                 {isStart ? '取消标记' : '标记'}
               </Button>
 
@@ -126,13 +126,14 @@ const QuestionCard: FC<IProps> = ({
                 cancelText="取消"
                 onConfirm={() => alert('执行复制')}
               >
-                <Button size="small" icon={<CopyOutlined rev />}>
+                <Button size="small" type="text" icon={<CopyOutlined rev />}>
                   复制
                 </Button>
               </Popconfirm>
 
               <Button
                 size="small"
+                type="text"
                 icon={<DeleteOutlined rev />}
                 onClick={handleDeleteQuestion}
               >
