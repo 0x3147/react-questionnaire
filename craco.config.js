@@ -7,5 +7,11 @@ module.exports = {
     alias: {
       '@': resolve('src')
     }
+  },
+  devServer: {
+    port: 3147, // B 端，前端
+    proxy: {
+      '/api': 'http://localhost:3001'
+    }
   }
 }
