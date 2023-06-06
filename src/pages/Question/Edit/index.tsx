@@ -1,6 +1,5 @@
-import React, { memo, useEffect } from 'react'
-import { getQuestionService } from '@/services/question'
-import { useParams } from 'react-router-dom'
+import React, { memo } from 'react'
+import useLoadQuestionData from '@/hooks/useLoadQuestionData'
 
 import type { FC, ReactNode } from 'react'
 
@@ -9,19 +8,12 @@ interface IProps {
 }
 
 const Edit: FC<IProps> = () => {
-  const { id = '' } = useParams<{ id: string }>()
-
-  useEffect(() => {
-    const fn = async () => {
-      const res = await getQuestionService(id)
-      console.log(res)
-    }
-    fn()
-  }, [])
+  const { loading, data } = useLoadQuestionData()
 
   return (
     <div>
-      <p>Edit {id}</p>
+      <p>Edit page</p>
+      {loading ? <p>loading</p> : <p>{JSON.stringify(data)}</p>}
     </div>
   )
 }

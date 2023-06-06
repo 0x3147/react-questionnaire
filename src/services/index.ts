@@ -21,12 +21,12 @@ instance.interceptors.response.use(async (res: AxiosResponse) => {
 
 export default instance
 
-export interface IRes<T = any> {
+export interface IRes {
   errno: number
-  data?: IResData<T>
+  data?: IResData
   msg?: string
 }
 
-export interface IResData<T = any> {
-  [key: string]: T
+export interface IResData {
+  [key: string]: any
 }

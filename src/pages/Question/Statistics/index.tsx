@@ -1,4 +1,6 @@
 import React, { memo } from 'react'
+import useLoadQuestionData from '@/hooks/useLoadQuestionData'
+
 import type { FC, ReactNode } from 'react'
 
 interface IProps {
@@ -6,9 +8,12 @@ interface IProps {
 }
 
 const Statistics: FC<IProps> = () => {
+  const { loading, data } = useLoadQuestionData()
+
   return (
     <div>
-      <p>Stat</p>
+      <p>stat page</p>
+      {loading ? <p>loading</p> : <p>{JSON.stringify(data)}</p>}
     </div>
   )
 }
