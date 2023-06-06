@@ -1,6 +1,7 @@
 import React, { memo } from 'react'
 import { Link } from 'react-router-dom'
-import { LOGIN_PATH } from '@/router'
+import { Space } from 'antd'
+import { LOGIN_PATH, REGISTER_PATH } from '@/router'
 
 import type { FC, ReactNode } from 'react'
 
@@ -11,7 +12,10 @@ interface IProps {
 const UserInfo: FC<IProps> = () => {
   return (
     <div>
-      <Link to={LOGIN_PATH}>登录</Link>
+      <Space>
+        <Link to={LOGIN_PATH}>登录</Link>
+        <Link to={REGISTER_PATH}>注册</Link>
+      </Space>
     </div>
   )
 }
