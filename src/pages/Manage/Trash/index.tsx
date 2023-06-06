@@ -72,7 +72,7 @@ const Trash: FC<IProps> = () => {
       title: '确定彻底删除吗？',
       okText: '我想好了，删除！',
       cancelText: '再考虑一下',
-      icon: <ExclamationCircleOutlined rev />,
+      icon: <ExclamationCircleOutlined rev={undefined} />,
       content: '再次提示您，彻底删除后，该问卷数据将无法找回',
       onOk: async () =>
         await message.success(`删除了${JSON.stringify(selectIds)}`)

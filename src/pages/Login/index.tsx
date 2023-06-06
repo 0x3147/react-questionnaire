@@ -83,7 +83,7 @@ const Login: FC<IProps> = () => {
       <div>
         <Space>
           <Title level={2}>
-            <LoginOutlined rev />
+            <LoginOutlined rev={undefined} />
           </Title>
           <Title level={2}>登录</Title>
         </Space>

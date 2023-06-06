@@ -18,7 +18,7 @@ const Logo: FC<IProps> = () => {
       <Link to="/">
         <Space>
           <Title>
-            <LineChartOutlined rev />
+            <LineChartOutlined rev={undefined} />
           </Title>
           <Title>uno问卷</Title>
         </Space>

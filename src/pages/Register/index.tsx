@@ -28,7 +28,7 @@ const Register: FC<IProps> = () => {
       <div>
         <Space>
           <Title level={2}>
-            <UserAddOutlined rev />
+            <UserAddOutlined rev={undefined} />
           </Title>
           <Title level={2}>注册新用户</Title>
         </Space>

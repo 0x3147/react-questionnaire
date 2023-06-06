@@ -48,7 +48,7 @@ const QuestionCard: FC<IProps> = ({
   const handleDeleteQuestion = () => {
     confirm({
       title: '确定删除这个问卷吗？',
-      icon: <ExclamationCircleOutlined rev />,
+      icon: <ExclamationCircleOutlined rev={undefined} />,
       okText: '确定',
       cancelText: '取消',
       content: '删除后可在回收站找回',
@@ -69,7 +69,9 @@ const QuestionCard: FC<IProps> = ({
               }
             >
               <Space>
-                {isStart && <StarOutlined style={{ color: 'yellow' }} rev />}
+                {isStart && (
+                  <StarOutlined style={{ color: 'yellow' }} rev={undefined} />
+                )}
                 {title}
               </Space>
             </Link>
@@ -96,7 +98,7 @@ const QuestionCard: FC<IProps> = ({
               <Button
                 type="text"
                 size="small"
-                icon={<EditOutlined rev />}
+                icon={<EditOutlined rev={undefined} />}
                 onClick={() => nav(`/question/edit/${_id}`)}
               >
                 编辑问卷
@@ -105,7 +107,7 @@ const QuestionCard: FC<IProps> = ({
               <Button
                 type="text"
                 size="small"
-                icon={<PieChartOutlined rev />}
+                icon={<PieChartOutlined rev={undefined} />}
                 onClick={() => nav(`/question/stat/${_id}`)}
                 disabled={!isPublished}
               >
@@ -116,7 +118,11 @@ const QuestionCard: FC<IProps> = ({
 
           <div className={styles.right}>
             <Space>
-              <Button size="small" type="text" icon={<StarOutlined rev />}>
+              <Button
+                size="small"
+                type="text"
+                icon={<StarOutlined rev={undefined} />}
+              >
                 {isStart ? '取消标记' : '标记'}
               </Button>
 
@@ -126,7 +132,11 @@ const QuestionCard: FC<IProps> = ({
                 cancelText="取消"
                 onConfirm={() => alert('执行复制')}
               >
-                <Button size="small" type="text" icon={<CopyOutlined rev />}>
+                <Button
+                  size="small"
+                  type="text"
+                  icon={<CopyOutlined rev={undefined} />}
+                >
                   复制
                 </Button>
               </Popconfirm>
@@ -134,7 +144,7 @@ const QuestionCard: FC<IProps> = ({
               <Button
                 size="small"
                 type="text"
-                icon={<DeleteOutlined rev />}
+                icon={<DeleteOutlined rev={undefined} />}
                 onClick={handleDeleteQuestion}
               >
                 删除
