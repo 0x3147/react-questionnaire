@@ -1,5 +1,6 @@
 import React, { memo, useState } from 'react'
 import styles from '../List/List.module.scss'
+import useLoadQuestionListData from '@/hooks/useLoadQuestionListData'
 import {
   Typography,
   Empty,
@@ -8,7 +9,8 @@ import {
   Button,
   Space,
   Modal,
-  message
+  message,
+  Spin
 } from 'antd'
 import { ExclamationCircleOutlined } from '@ant-design/icons'
 import { useTitle } from 'ahooks'
@@ -19,33 +21,6 @@ import type { FC, ReactNode } from 'react'
 interface IProps {
   children?: ReactNode
 }
-
-const rawQuestionList = [
-  {
-    _id: 'q1',
-    title: '问卷1',
-    isPublished: false,
-    isStart: true,
-    answerCount: 5,
-    createAt: '2021-01-01'
-  },
-  {
-    _id: 'q2',
-    title: '问卷2',
-    isPublished: false,
-    isStart: true,
-    answerCount: 6,
-    createAt: '2021-01-01'
-  },
-  {
-    _id: 'q3',
-    title: '问卷3',
-    isPublished: false,
-    isStart: true,
-    answerCount: 7,
-    createAt: '2021-01-01'
-  }
-]
 
 const { Title } = Typography
 const { confirm } = Modal
@@ -58,9 +33,10 @@ const { confirm } = Modal
 const Trash: FC<IProps> = () => {
   useTitle('问卷回收站')
 
-  const [questionList, setQuestionList] = useState(rawQuestionList)
-
   const [selectIds, setSelectIds] = useState<string[]>([])
+
+  const { data, loading } = useLoadQuestionListData({ isDeleted: true })
+  const { list = [] } = data || {}
 
   /**
    * @desc 彻底删除
@@ -104,8 +80,8 @@ const Trash: FC<IProps> = () => {
     },
     {
       title: '创建时间',
-      dataIndex: 'createAt',
-      key: 'createAt'
+      dataIndex: 'createdAt',
+      key: 'createdAt'
     }
   ]
 
@@ -126,7 +102,7 @@ const Trash: FC<IProps> = () => {
         </Space>
       </div>
       <Table
-        dataSource={questionList}
+        dataSource={list}
         columns={tableColumns}
         pagination={false}
         rowKey={(record) => record._id}
@@ -151,10 +127,15 @@ const Trash: FC<IProps> = () => {
         </div>
       </div>
       <div className={styles.content}>
-        {questionList.length === 0 && (
+        {loading && (
+          <div style={{ textAlign: 'center' }}>
+            <Spin />
+          </div>
+        )}
+        {!loading && list.length === 0 && (
           <Empty description="您还没有删除任何问卷哦~" />
         )}
-        {questionList.length > 0 && TableView}
+        {list.length > 0 && TableView}
       </div>
       <div className={styles.footer}></div>
     </>
