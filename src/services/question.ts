@@ -6,6 +6,8 @@ export interface ISearchOption {
   keyword: string
   isStar: boolean
   isDeleted: boolean
+  page: number
+  pageSize: number
 }
 
 /**

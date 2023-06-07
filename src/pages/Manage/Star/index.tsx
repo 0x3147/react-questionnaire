@@ -5,6 +5,7 @@ import { Typography, Empty, Spin } from 'antd'
 import useLoadQuestionListData from '@/hooks/useLoadQuestionListData'
 import QuestionCard from '@/components/QuestionCard'
 import ListSearch from '@/components/ListSearch'
+import ListPagination from '@/components/ListPagination'
 
 import type { FC, ReactNode } from 'react'
 
@@ -23,7 +24,7 @@ const Star: FC<IProps> = () => {
   useTitle('已标记的问卷')
 
   const { data, loading } = useLoadQuestionListData({ isStar: true })
-  const { list = [] } = data || {}
+  const { list = [], total = 0 } = data || {}
 
   return (
     <>
@@ -48,7 +49,9 @@ const Star: FC<IProps> = () => {
           list.length > 0 &&
           list.map((item: any) => <QuestionCard key={item._id} {...item} />)}
       </div>
-      <div className={styles.footer}>分页</div>
+      <div className={styles.footer}>
+        {!loading && <ListPagination total={total} />}
+      </div>
     </>
   )
 }

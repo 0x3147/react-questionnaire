@@ -15,6 +15,7 @@ import {
 import { ExclamationCircleOutlined } from '@ant-design/icons'
 import { useTitle } from 'ahooks'
 import ListSearch from '@/components/ListSearch'
+import ListPagination from '@/components/ListPagination'
 
 import type { FC, ReactNode } from 'react'
 
@@ -36,7 +37,7 @@ const Trash: FC<IProps> = () => {
   const [selectIds, setSelectIds] = useState<string[]>([])
 
   const { data, loading } = useLoadQuestionListData({ isDeleted: true })
-  const { list = [] } = data || {}
+  const { list = [], total = 0 } = data || {}
 
   /**
    * @desc 彻底删除
@@ -137,7 +138,9 @@ const Trash: FC<IProps> = () => {
         )}
         {list.length > 0 && TableView}
       </div>
-      <div className={styles.footer}></div>
+      <div className={styles.footer}>
+        {!loading && <ListPagination total={total} />}
+      </div>
     </>
   )
 }
