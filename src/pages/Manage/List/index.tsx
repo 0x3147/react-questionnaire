@@ -3,7 +3,7 @@ import styles from './List.module.scss'
 import { useSearchParams } from 'react-router-dom'
 import { getQuestionListService } from '@/services/question'
 import { useTitle, useDebounceFn, useRequest } from 'ahooks'
-import { Typography, Spin, Empty } from 'antd'
+import { Typography, Spin, Empty, message } from 'antd'
 import { LIST_PAGE_SIZE, LIST_SEARCH_PARAM_KEY } from '@/constant'
 import QuestionCard from '@/components/QuestionCard'
 import ListSearch from '@/components/ListSearch'
@@ -64,6 +64,9 @@ const List: FC<IProps> = () => {
       setList(list.concat(qList))
       setTotal(total)
       setPage(page + 1)
+    },
+    onError: async (err) => {
+      await message.error('加载失败了~' + err.message)
     }
   })
 
@@ -89,7 +92,7 @@ const List: FC<IProps> = () => {
     }
   )
 
-  // 搜索关键字变化时
+  // 搜索关键字变化时，执行加载
   useEffect(() => {
     isLoadMore()
   }, [searchParams])
