@@ -50,7 +50,7 @@ const Star: FC<IProps> = () => {
           list.map((item: any) => <QuestionCard key={item._id} {...item} />)}
       </div>
       <div className={styles.footer}>
-        <ListPagination total={total} />
+        {!loading && <ListPagination total={total} />}
       </div>
     </>
   )

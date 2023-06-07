@@ -139,7 +139,7 @@ const Trash: FC<IProps> = () => {
         {list.length > 0 && TableView}
       </div>
       <div className={styles.footer}>
-        <ListPagination total={total} />
+        {!loading && <ListPagination total={total} />}
       </div>
     </>
   )
