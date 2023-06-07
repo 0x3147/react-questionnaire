@@ -1,7 +1,7 @@
 import React, { memo } from 'react'
 import styles from '../List/List.module.scss'
 import { useTitle } from 'ahooks'
-import { Typography, Empty, Spin } from 'antd'
+import { Typography, Empty, Spin, Affix, FloatButton } from 'antd'
 import useLoadQuestionListData from '@/hooks/useLoadQuestionListData'
 import QuestionCard from '@/components/QuestionCard'
 import ListSearch from '@/components/ListSearch'
@@ -33,7 +33,9 @@ const Star: FC<IProps> = () => {
           <Title level={3}>星标问卷</Title>
         </div>
         <div className={styles.right}>
-          <ListSearch />
+          <Affix offsetTop={20}>
+            <ListSearch />
+          </Affix>
         </div>
       </div>
       <div className={styles.content}>
@@ -48,6 +50,7 @@ const Star: FC<IProps> = () => {
         {!loading &&
           list.length > 0 &&
           list.map((item: any) => <QuestionCard key={item._id} {...item} />)}
+        <FloatButton.BackTop />
       </div>
       <div className={styles.footer}>
         {!loading && <ListPagination total={total} />}

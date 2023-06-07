@@ -10,7 +10,8 @@ import {
   Space,
   Modal,
   message,
-  Spin
+  Spin,
+  Affix
 } from 'antd'
 import { ExclamationCircleOutlined } from '@ant-design/icons'
 import { useTitle } from 'ahooks'
@@ -124,7 +125,9 @@ const Trash: FC<IProps> = () => {
           <Title level={3}>问卷回收</Title>
         </div>
         <div className={styles.right}>
-          <ListSearch />
+          <Affix offsetTop={20}>
+            <ListSearch />
+          </Affix>
         </div>
       </div>
       <div className={styles.content}>

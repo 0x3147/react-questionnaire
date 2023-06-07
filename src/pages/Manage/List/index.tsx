@@ -3,7 +3,7 @@ import styles from './List.module.scss'
 import { useSearchParams } from 'react-router-dom'
 import { getQuestionListService } from '@/services/question'
 import { useTitle, useDebounceFn, useRequest } from 'ahooks'
-import { Typography, Spin, Empty, message } from 'antd'
+import { Typography, Spin, Empty, message, Affix, FloatButton } from 'antd'
 import { LIST_PAGE_SIZE, LIST_SEARCH_PARAM_KEY } from '@/constant'
 import QuestionCard from '@/components/QuestionCard'
 import ListSearch from '@/components/ListSearch'
@@ -128,12 +128,15 @@ const List: FC<IProps> = () => {
           <Title level={3}>我的问卷</Title>
         </div>
         <div className={styles.right}>
-          <ListSearch />
+          <Affix offsetTop={20}>
+            <ListSearch />
+          </Affix>
         </div>
       </div>
       <div className={styles.content}>
         {list.length > 0 &&
           list.map((item: any) => <QuestionCard key={item._id} {...item} />)}
+        <FloatButton.BackTop />
       </div>
       <div className={styles.footer}>
         <div ref={bottomRef}>{loadingMoreContent}</div>
