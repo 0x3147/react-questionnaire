@@ -1,6 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styles from './QuestionCard.module.scss'
 import { useNavigate, Link } from 'react-router-dom'
+import {
+  updateQuestionService,
+  duplicateQuestionService
+} from '@/services/question'
+import { useRequest } from 'ahooks'
 import { Button, Space, Divider, Tag, Popconfirm, Modal, message } from 'antd'
 import {
   EditOutlined,
@@ -40,6 +45,59 @@ const QuestionCard: FC<IProps> = ({
 }) => {
   const nav = useNavigate()
 
+  const [isStarStatus, setIsStarStatus] = useState(isStar)
+  const [isDeletedStatus, setIsdeletedStatus] = useState(false)
+
+  const { loading: changeStarLoading, run: changeStar } = useRequest(
+    async () => {
+      await updateQuestionService(_id, {
+        isStar: !isStarStatus
+      })
+    },
+    {
+      manual: true,
+      onSuccess: async () => {
+        setIsStarStatus(!isStarStatus)
+        if (!isStarStatus) {
+          message.success('标记成功')
+          return
+        } else {
+          message.success('取消标记成功')
+          return
+        }
+      },
+      onError: async (err) => {
+        message.error(err.message)
+      }
+    }
+  )
+
+  const { loading: duplicateLoading, run: handleDuplicate } = useRequest(
+    async () => {
+      return await duplicateQuestionService(_id)
+    },
+    {
+      manual: true,
+      onSuccess: async (res) => {
+        message.success('复制成功!')
+        nav(`/question/edit/${res.id}`)
+      }
+    }
+  )
+
+  const { loading: deleteLoading, run: handleRemove } = useRequest(
+    async () => {
+      await updateQuestionService(_id, { isDeleted: true })
+    },
+    {
+      manual: true,
+      onSuccess: async () => {
+        setIsdeletedStatus(true)
+        message.success('已移入回收站!')
+      }
+    }
+  )
+
   /**
    * @desc 删除问卷
    * @Author bk0x114
@@ -52,11 +110,13 @@ const QuestionCard: FC<IProps> = ({
       okText: '确定',
       cancelText: '取消',
       content: '删除后可在回收站找回',
-      onOk: async () => {
-        await message.info('执行删除')
+      onOk: () => {
+        handleRemove()
       }
     })
   }
+
+  if (isDeletedStatus) return null
 
   return (
     <>
@@ -69,7 +129,7 @@ const QuestionCard: FC<IProps> = ({
               }
             >
               <Space>
-                {isStar && (
+                {isStarStatus && (
                   <StarOutlined style={{ color: 'yellow' }} rev={undefined} />
                 )}
                 {title}
@@ -122,20 +182,23 @@ const QuestionCard: FC<IProps> = ({
                 size="small"
                 type="text"
                 icon={<StarOutlined rev={undefined} />}
+                onClick={changeStar}
+                disabled={changeStarLoading}
               >
-                {isStar ? '取消标记' : '标记'}
+                {isStarStatus ? '取消标记' : '标记'}
               </Button>
 
               <Popconfirm
                 title="确定复制这个问卷吗？"
                 okText="确定"
                 cancelText="取消"
-                onConfirm={() => alert('执行复制')}
+                onConfirm={handleDuplicate}
               >
                 <Button
                   size="small"
                   type="text"
                   icon={<CopyOutlined rev={undefined} />}
+                  disabled={duplicateLoading}
                 >
                   复制
                 </Button>
@@ -146,8 +209,9 @@ const QuestionCard: FC<IProps> = ({
                 type="text"
                 icon={<DeleteOutlined rev={undefined} />}
                 onClick={handleDeleteQuestion}
+                disabled={deleteLoading}
               >
-                删除
+                放入回收站
               </Button>
             </Space>
           </div>
