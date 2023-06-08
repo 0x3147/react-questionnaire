@@ -46,7 +46,7 @@ const QuestionCard: FC<IProps> = ({
   const nav = useNavigate()
 
   const [isStarStatus, setIsStarStatus] = useState(isStar)
-  const [isDeletedStatus, setIsdeletedStatus] = useState(false)
+  const [isDeletedStatus, setIsDeletedStatus] = useState(false)
 
   const { loading: changeStarLoading, run: changeStar } = useRequest(
     async () => {
@@ -92,7 +92,7 @@ const QuestionCard: FC<IProps> = ({
     {
       manual: true,
       onSuccess: async () => {
-        setIsdeletedStatus(true)
+        setIsDeletedStatus(true)
         message.success('已移入回收站!')
       }
     }
