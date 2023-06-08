@@ -46,6 +46,7 @@ const QuestionCard: FC<IProps> = ({
   const nav = useNavigate()
 
   const [isStarStatus, setIsStarStatus] = useState(isStar)
+  const [isDeletedStatus, setIsdeletedStatus] = useState(false)
 
   const { loading: changeStarLoading, run: changeStar } = useRequest(
     async () => {
@@ -84,6 +85,19 @@ const QuestionCard: FC<IProps> = ({
     }
   )
 
+  const { loading: deleteLoading, run: handleRemove } = useRequest(
+    async () => {
+      await updateQuestionService(_id, { isDeleted: true })
+    },
+    {
+      manual: true,
+      onSuccess: async () => {
+        setIsdeletedStatus(true)
+        message.success('已移入回收站!')
+      }
+    }
+  )
+
   /**
    * @desc 删除问卷
    * @Author bk0x114
@@ -96,11 +110,13 @@ const QuestionCard: FC<IProps> = ({
       okText: '确定',
       cancelText: '取消',
       content: '删除后可在回收站找回',
-      onOk: async () => {
-        await message.info('执行删除')
+      onOk: () => {
+        handleRemove()
       }
     })
   }
+
+  if (isDeletedStatus) return null
 
   return (
     <>
@@ -193,8 +209,9 @@ const QuestionCard: FC<IProps> = ({
                 type="text"
                 icon={<DeleteOutlined rev={undefined} />}
                 onClick={handleDeleteQuestion}
+                disabled={deleteLoading}
               >
-                删除
+                放入回收站
               </Button>
             </Space>
           </div>

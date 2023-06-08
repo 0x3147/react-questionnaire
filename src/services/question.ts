@@ -55,7 +55,7 @@ export const updateQuestionService = async (
   id: string,
   option: { [key: string]: any }
 ): Promise<IResData> => {
-  const url = `/api/question/star/${id}`
+  const url = `/api/question/starOrRemove/${id}`
   return (await axios.post(url, option)) as IResData
 }
 
