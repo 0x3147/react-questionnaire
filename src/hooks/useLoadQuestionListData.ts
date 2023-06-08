@@ -34,10 +34,10 @@ const useLoadQuestionListData = (option: Partial<ISearchOption> = {}) => {
     })
   }
 
-  const { data, loading, error } = useRequest(load, {
+  const { data, loading, error, refresh } = useRequest(load, {
     refreshDeps: [searchParams]
   })
-  return { data, loading, error }
+  return { data, loading, error, refresh }
 }
 
 export default useLoadQuestionListData

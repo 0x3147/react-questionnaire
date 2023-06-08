@@ -2,6 +2,10 @@ import React, { memo, useState } from 'react'
 import styles from '../List/List.module.scss'
 import useLoadQuestionListData from '@/hooks/useLoadQuestionListData'
 import {
+  updateQuestionService,
+  deleteQuestionService
+} from '@/services/question'
+import {
   Typography,
   Empty,
   Table,
@@ -14,7 +18,7 @@ import {
   Affix
 } from 'antd'
 import { ExclamationCircleOutlined } from '@ant-design/icons'
-import { useTitle } from 'ahooks'
+import { useRequest, useTitle } from 'ahooks'
 import ListSearch from '@/components/ListSearch'
 import ListPagination from '@/components/ListPagination'
 
@@ -37,8 +41,44 @@ const Trash: FC<IProps> = () => {
 
   const [selectIds, setSelectIds] = useState<string[]>([])
 
-  const { data, loading } = useLoadQuestionListData({ isDeleted: true })
+  const { data, loading, refresh } = useLoadQuestionListData({
+    isDeleted: true
+  })
   const { list = [], total = 0 } = data || {}
+
+  // 恢复问卷
+  const { run: handleRecover } = useRequest(
+    async () => {
+      for await (const id of selectIds) {
+        await updateQuestionService(id, { isDeleted: false })
+      }
+    },
+    {
+      manual: true,
+      debounceWait: 500,
+      onSuccess: async () => {
+        message.success('恢复成功!')
+        refresh()
+        setSelectIds([])
+      }
+    }
+  )
+
+  // 彻底删除
+  const { run: handleDeleted } = useRequest(
+    async () => {
+      return await deleteQuestionService(selectIds)
+    },
+    {
+      manual: true,
+      debounceWait: 500,
+      onSuccess: async () => {
+        message.success('删除成功!')
+        refresh()
+        setSelectIds([])
+      }
+    }
+  )
 
   /**
    * @desc 彻底删除
@@ -52,8 +92,9 @@ const Trash: FC<IProps> = () => {
       cancelText: '再考虑一下',
       icon: <ExclamationCircleOutlined rev={undefined} />,
       content: '再次提示您，彻底删除后，该问卷数据将无法找回',
-      onOk: async () =>
-        await message.success(`删除了${JSON.stringify(selectIds)}`)
+      onOk: async () => {
+        handleDeleted()
+      }
     })
   }
 
@@ -92,14 +133,18 @@ const Trash: FC<IProps> = () => {
       <div style={{ marginBottom: '16px' }}>
         <Space>
           <Button
+            type="primary"
+            disabled={selectIds.length === 0}
+            onClick={handleRecover}
+          >
+            恢复
+          </Button>
+          <Button
             danger
             disabled={selectIds.length === 0}
             onClick={handleDelete}
           >
             彻底删除
-          </Button>
-          <Button type="primary" disabled={selectIds.length === 0}>
-            恢复
           </Button>
         </Space>
       </div>
@@ -110,7 +155,7 @@ const Trash: FC<IProps> = () => {
         rowKey={(record) => record._id}
         rowSelection={{
           type: 'checkbox',
-          onChange: (selectedRowKeys, selectedRows) => {
+          onChange: (selectedRowKeys) => {
             setSelectIds(selectedRowKeys as string[])
           }
         }}
@@ -137,7 +182,7 @@ const Trash: FC<IProps> = () => {
           </div>
         )}
         {!loading && list.length === 0 && (
-          <Empty description="您还没有删除任何问卷哦~" />
+          <Empty description="您还没有将任何问卷放入回收站哦~" />
         )}
         {list.length > 0 && TableView}
       </div>

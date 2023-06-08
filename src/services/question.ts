@@ -71,3 +71,10 @@ export const duplicateQuestionService = async (
   const url = `/api/question/duplicate/${id}`
   return (await axios.post(url)) as IResData
 }
+
+export const deleteQuestionService = async (
+  idArr: string[]
+): Promise<IResData> => {
+  const url = `/api/question/delete`
+  return (await axios.post(url, { data: { idArr } })) as IResData
+}
