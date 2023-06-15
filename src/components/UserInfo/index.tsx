@@ -2,10 +2,11 @@ import React, { memo } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Button, message } from 'antd'
 import { LOGIN_PATH } from '@/router'
-import { useRequest } from 'ahooks'
-import { getUserInfoService } from '@/services/user'
 import { UserOutlined } from '@ant-design/icons'
 import { removeToken } from '@/utils/user-token'
+import useGetUserInfo from '@/hooks/useGetUserInfo'
+import { useAppDispatch } from '@/store'
+import { logoutAction } from '@/store/module/userReducer'
 
 import type { FC, ReactNode } from 'react'
 
@@ -19,9 +20,11 @@ interface IProps {
  * @Date 2023-06-08 16:39:43
  */
 const UserInfo: FC<IProps> = () => {
-  const { data } = useRequest(getUserInfoService)
-  const { username, nickname } = data || {}
   const nav = useNavigate()
+
+  const dispatch = useAppDispatch()
+
+  const { username, nickname } = useGetUserInfo()
 
   /**
    * @desc 退出登录
@@ -29,6 +32,7 @@ const UserInfo: FC<IProps> = () => {
    * @Date 2023-06-08 16:40:23
    */
   const logout = () => {
+    dispatch(logoutAction())
     removeToken()
     message.success('您已成功退出登录!')
     nav(LOGIN_PATH)

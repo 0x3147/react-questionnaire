@@ -77,3 +77,9 @@ export const HOME_PATH = '/'
 export const LOGIN_PATH = '/login'
 export const REGISTER_PATH = '/register'
 export const MANAGE_INDEX_PATH = '/manage/list'
+export const isLoginOrRegisterPath = (path: string) => {
+  return [LOGIN_PATH, REGISTER_PATH].includes(path)
+}
+export const isNoNeedUserInfoPath = (path: string) => {
+  return [LOGIN_PATH, REGISTER_PATH, HOME_PATH].includes(path)
+}
