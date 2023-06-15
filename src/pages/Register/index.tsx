@@ -1,8 +1,10 @@
 import React, { memo } from 'react'
 import styles from './Register.module.scss'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { registerService } from '@/services/user'
 import { LOGIN_PATH } from '@/router'
-import { Typography, Space, Form, Input, Button } from 'antd'
+import { useRequest } from 'ahooks'
+import { Typography, Space, Form, Input, Button, message } from 'antd'
 import { UserAddOutlined } from '@ant-design/icons'
 
 import type { FC, ReactNode } from 'react'
@@ -19,8 +21,24 @@ const { Title } = Typography
  * @Date 2023-06-06 14:47:20
  */
 const Register: FC<IProps> = () => {
+  const nav = useNavigate()
+
+  const { run } = useRequest(
+    async (values: any) => {
+      const { username, password, nickname } = values
+      await registerService(username, password, nickname)
+    },
+    {
+      manual: true,
+      onSuccess: () => {
+        message.success('注册成功！')
+        nav(LOGIN_PATH)
+      }
+    }
+  )
+
   const onFinish = (values: any) => {
-    console.log(values)
+    run(values)
   }
 
   return (

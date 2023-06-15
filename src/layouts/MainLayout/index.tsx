@@ -1,9 +1,11 @@
 import React, { memo } from 'react'
 import styles from './MainLayout.module.scss'
-import { Layout } from 'antd'
+import { Layout, Skeleton } from 'antd'
 import { Outlet } from 'react-router-dom'
 import Logo from '@/components/Logo'
-import UserInfo from '@/layouts/UserInfo'
+import UserInfo from 'src/components/UserInfo'
+import useLoadUserData from '@/hooks/useLoadUserData'
+import useNavPage from '@/hooks/useNavPage'
 
 import type { FC, ReactNode } from 'react'
 
@@ -14,6 +16,9 @@ interface IProps {
 const { Header, Footer, Content } = Layout
 
 const MainLayout: FC<IProps> = () => {
+  const { waitingUserData } = useLoadUserData()
+  useNavPage(waitingUserData)
+
   return (
     <Layout>
       <Header className={styles.header}>
@@ -25,7 +30,7 @@ const MainLayout: FC<IProps> = () => {
         </div>
       </Header>
       <Content className={styles.main}>
-        <Outlet />
+        {waitingUserData ? <Skeleton active /> : <Outlet />}
       </Content>
       <Footer className={styles.footer}>
         uno问卷 &copy; 2023 created by bk0x114

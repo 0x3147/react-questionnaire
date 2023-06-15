@@ -1,9 +1,12 @@
 import React, { memo, useEffect } from 'react'
 import styles from './Login.module.scss'
-import { Link } from 'react-router-dom'
-import { REGISTER_PATH } from '@/router'
-import { Typography, Space, Form, Input, Button, Checkbox } from 'antd'
+import { Link, useNavigate } from 'react-router-dom'
+import { loginService } from '@/services/user'
+import { MANAGE_INDEX_PATH, REGISTER_PATH } from '@/router'
+import { useRequest } from 'ahooks'
+import { Typography, Space, Form, Input, Button, Checkbox, message } from 'antd'
 import { LoginOutlined } from '@ant-design/icons'
+import { setToken } from '@/utils/user-token'
 
 import type { FC, ReactNode } from 'react'
 
@@ -58,10 +61,27 @@ const { Title } = Typography
 const Login: FC<IProps> = () => {
   const [form] = Form.useForm()
 
+  const nav = useNavigate()
+
   useEffect(() => {
     const { username, password } = getUserStorage()
     form.setFieldsValue({ username, password })
   }, [])
+
+  const { run } = useRequest(
+    async (username: string, password: string) => {
+      return await loginService(username, password)
+    },
+    {
+      manual: true,
+      onSuccess: (res) => {
+        const { token = '' } = res
+        setToken(token)
+        message.success('登录成功！')
+        nav(MANAGE_INDEX_PATH)
+      }
+    }
+  )
 
   /**
    * @desc 表单提交
@@ -70,7 +90,10 @@ const Login: FC<IProps> = () => {
    * @param values 表单数据
    */
   const onFinish = (values: any) => {
-    const { username, password, remember } = values
+    const { username, password, remember } = values || {}
+
+    run(username, password)
+
     if (remember) {
       rememberUser(username, password)
     } else {
