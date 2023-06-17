@@ -9,15 +9,19 @@ interface IProps {
   children?: ReactNode
 }
 
+/**
+ * @desc 问卷编辑/统计布局页
+ * @Author bk0x114
+ * @Date 2023-06-17 14:47:04
+ */
 const QuestionLayout: FC<IProps> = () => {
   const { waitingUserData } = useLoadUserData()
   useNavPage(waitingUserData)
 
   return (
-    <>
-      <p>question layout</p>
-      <div>{waitingUserData ? <Skeleton active /> : <Outlet />}</div>
-    </>
+    <div style={{ height: '100vh' }}>
+      {waitingUserData ? <Skeleton active /> : <Outlet />}
+    </div>
   )
 }
 
