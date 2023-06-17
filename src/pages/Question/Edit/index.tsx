@@ -1,6 +1,7 @@
 import React, { memo } from 'react'
 import useLoadQuestionData from '@/hooks/useLoadQuestionData'
 import styles from './Edit.module.scss'
+import EditCanvas from '@/pages/Question/Edit/EditCanvas'
 
 import type { FC, ReactNode } from 'react'
 
@@ -24,7 +25,7 @@ const Edit: FC<IProps> = () => {
           <div className={styles.left}>Left</div>
           <div className={styles.center}>
             <div className={styles['canvas-wrapper']}>
-              <div style={{ height: '900px' }}>滚动测试</div>
+              <EditCanvas />
             </div>
           </div>
           <div className={styles.right}>Right</div>
