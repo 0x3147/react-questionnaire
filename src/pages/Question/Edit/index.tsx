@@ -15,7 +15,7 @@ interface IProps {
  * @Date 2023-06-17 14:42:20
  */
 const Edit: FC<IProps> = () => {
-  const { loading, data } = useLoadQuestionData()
+  const { loading } = useLoadQuestionData()
 
   return (
     <div className={styles.container}>
@@ -25,7 +25,7 @@ const Edit: FC<IProps> = () => {
           <div className={styles.left}>Left</div>
           <div className={styles.center}>
             <div className={styles['canvas-wrapper']}>
-              <EditCanvas />
+              <EditCanvas loading={loading} />
             </div>
           </div>
           <div className={styles.right}>Right</div>

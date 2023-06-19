@@ -8,12 +8,11 @@ interface IProps {
 }
 
 const Statistics: FC<IProps> = () => {
-  const { loading, data } = useLoadQuestionData()
+  const { loading } = useLoadQuestionData()
 
   return (
     <div>
       <p>stat page</p>
-      {loading ? <p>loading</p> : <p>{JSON.stringify(data)}</p>}
     </div>
   )
 }
