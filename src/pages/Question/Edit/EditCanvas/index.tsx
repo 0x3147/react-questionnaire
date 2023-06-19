@@ -1,11 +1,14 @@
 import React, { memo } from 'react'
 import { Spin } from 'antd'
 import styles from './EditCanvas.module.scss'
+import classNames from 'classnames'
 import useGetComponentsInfo from '@/hooks/useGetComponentsInfo'
 import { getComponentConfig } from '@/components/QuestionComponents'
+import { useAppDispatch } from '@/store'
+import { changeSelectedId } from '@/store/module/componentReducers'
 
 import type { IComponentInfo } from '@/store/module/componentReducers'
-import type { FC, ReactNode } from 'react'
+import type { FC, ReactNode, MouseEvent } from 'react'
 
 interface IProps {
   children?: ReactNode
@@ -32,7 +35,21 @@ const generateComponent = (componentInfo: IComponentInfo) => {
  * @Date 2023-06-17 16:05:08
  */
 const EditCanvas: FC<IProps> = ({ loading }) => {
-  const { componentList } = useGetComponentsInfo()
+  const dispatch = useAppDispatch()
+
+  const { componentList, selectedId } = useGetComponentsInfo()
+
+  /**
+   * @desc 点击组件触发
+   * @Author bk0x114
+   * @Date 2023-06-19 15:44:00
+   * @param id 组件id
+   * @param e 事件对象
+   */
+  const handleClick = (e: MouseEvent, id: string) => {
+    e.stopPropagation() // 阻止冒泡
+    dispatch(changeSelectedId(id))
+  }
 
   if (loading) {
     return (
@@ -46,8 +63,18 @@ const EditCanvas: FC<IProps> = ({ loading }) => {
     <div className={styles.canvas}>
       {componentList.map((item) => {
         const { fe_id } = item
+        const wrapperDefaultClassName = styles['component-wrapper']
+        const selectedClassName = styles.selected
+        const wrapperClassName = classNames({
+          [wrapperDefaultClassName]: true,
+          [selectedClassName]: fe_id === selectedId
+        })
         return (
-          <div className={styles['component-wrapper']} key={fe_id}>
+          <div
+            className={wrapperClassName}
+            key={fe_id}
+            onClick={(e) => handleClick(e, fe_id)}
+          >
             <div className={styles.component}>{generateComponent(item)}</div>
           </div>
         )

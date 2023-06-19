@@ -8,9 +8,9 @@ import { useAppSelector } from '@/store'
 const useGetComponentsInfo = () => {
   const components = useAppSelector((state) => state.components)
 
-  const { componentList = [] } = components
+  const { componentList = [], selectedId } = components
 
-  return { componentList }
+  return { componentList, selectedId }
 }
 
 export default useGetComponentsInfo

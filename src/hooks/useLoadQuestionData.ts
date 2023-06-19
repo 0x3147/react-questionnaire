@@ -29,8 +29,12 @@ const useLoadQuestionData = () => {
   useEffect(() => {
     if (!data) return
     const { title = '', componentList = [] } = data
+    let selectedId = ''
+    if (componentList.length > 0) {
+      selectedId = componentList[0].fe_id
+    }
     // 将componentList存入store
-    dispatch(resetComponents({ componentList }))
+    dispatch(resetComponents({ componentList, selectedId }))
   }, [data])
 
   // 根据id获取问卷数据
