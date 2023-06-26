@@ -22,6 +22,20 @@ const componentsConfigList: ComponentConfigType[] = [
   QuestionTitleConfig
 ]
 
+// 组件配置分组
+export const componentConfigGroup = [
+  {
+    groupId: 'textGroup',
+    groupName: '文本显示',
+    components: [QuestionTitleConfig]
+  },
+  {
+    groupId: 'inputGroup',
+    groupName: '用户输入',
+    components: [QuestionInputConfig]
+  }
+]
+
 /**
  * @desc 获取组件配置
  * @Author bk0x114
