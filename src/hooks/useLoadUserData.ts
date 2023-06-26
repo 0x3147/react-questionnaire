@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react'
 import { useAppDispatch } from '@/store'
 import useGetUserInfo from '@/hooks/useGetUserInfo'
-import { fetchUserDataAction } from '@/store/module/userReducer'
+import { useRequest } from 'ahooks'
+import { getUserInfoService } from '@/services/user'
+import { loginAction } from '@/store/module/userReducer'
 
 /**
  * @desc 加载用户数据自定义hook
@@ -17,10 +19,16 @@ const useLoadUserData = () => {
    * @Author bk0x114
    * @Date 2023-06-15 17:44:05
    */
-  const loadUserData = () => {
-    dispatch(fetchUserDataAction()) // 触发异步action 获取用户数据
-    setWaitingUserData(false)
-  }
+  const { run } = useRequest(getUserInfoService, {
+    manual: true,
+    onSuccess(result) {
+      const { username, nickname } = result
+      dispatch(loginAction({ username, nickname })) // 存储到 redux store
+    },
+    onFinally() {
+      setWaitingUserData(false)
+    }
+  })
 
   const { username } = useGetUserInfo()
 
@@ -29,7 +37,7 @@ const useLoadUserData = () => {
       setWaitingUserData(false) // 已有用户数据，不需要再加载了
       return
     }
-    loadUserData()
+    run()
   }, [username])
 
   return { waitingUserData }
