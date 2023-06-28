@@ -64,10 +64,7 @@ export const componentSlice = createSlice({
           (c) => c.fe_id === fe_id
         )
         if (currentComponent) {
-          currentComponent.props = {
-            ...currentComponent.props,
-            ...newProps
-          }
+          currentComponent.props = newProps
         }
       }
     )

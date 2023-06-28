@@ -37,6 +37,7 @@ const PropComponent: FC<currentProps> = ({
   return (
     <>
       <Form
+        form={form}
         layout="vertical"
         initialValues={{ text, level, isCenter }}
         onValuesChange={handleValuesChange}

@@ -26,6 +26,7 @@ const PropComponent: FC<currentProps> = ({ title, placeholder, onChange }) => {
   return (
     <>
       <Form
+        form={form}
         layout="vertical"
         initialValues={{ title, placeholder }}
         onValuesChange={handleValuesChange}
