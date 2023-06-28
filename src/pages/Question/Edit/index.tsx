@@ -2,6 +2,7 @@ import React, { memo } from 'react'
 import useLoadQuestionData from '@/hooks/useLoadQuestionData'
 import styles from './Edit.module.scss'
 import EditCanvas from '@/pages/Question/Edit/EditCanvas'
+import LeftPanel from '@/pages/Question/Edit/LeftPanel'
 import { useAppDispatch } from '@/store'
 import { changeSelectedId } from '@/store/module/componentReducers'
 
@@ -30,7 +31,9 @@ const Edit: FC<IProps> = () => {
       <div>Header</div>
       <div className={styles['content-wrapper']}>
         <div className={styles.content}>
-          <div className={styles.left}>Left</div>
+          <div className={styles.left}>
+            <LeftPanel />
+          </div>
           <div className={styles.center} onClick={handleClearSelected}>
             <div className={styles['canvas-wrapper']}>
               <EditCanvas loading={loading} />
