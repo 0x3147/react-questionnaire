@@ -21,6 +21,7 @@ const LeftPanel: FC<IProps> = () => {
       label: (
         <span>
           <AppstoreOutlined rev={undefined} />
+          组件库
         </span>
       ),
       children: <ComponentLib />
@@ -30,6 +31,7 @@ const LeftPanel: FC<IProps> = () => {
       label: (
         <span>
           <BarsOutlined rev={undefined} />
+          图层
         </span>
       ),
       children: <div>图层</div>
