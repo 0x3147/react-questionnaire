@@ -1,8 +1,10 @@
 import React, { memo } from 'react'
 import useLoadQuestionData from '@/hooks/useLoadQuestionData'
 import styles from './Edit.module.scss'
-import EditCanvas from '@/pages/Question/Edit/EditCanvas'
-import LeftPanel from '@/pages/Question/Edit/LeftPanel'
+import EditCanvas from './EditCanvas'
+import LeftPanel from './LeftPanel'
+import RightPanel from './RightPanel'
+import EditHeader from './EditHeader'
 import { useAppDispatch } from '@/store'
 import { changeSelectedId } from '@/store/module/componentReducers'
 
@@ -28,7 +30,7 @@ const Edit: FC<IProps> = () => {
 
   return (
     <div className={styles.container}>
-      <div>Header</div>
+      <EditHeader />
       <div className={styles['content-wrapper']}>
         <div className={styles.content}>
           <div className={styles.left}>
@@ -39,7 +41,9 @@ const Edit: FC<IProps> = () => {
               <EditCanvas loading={loading} />
             </div>
           </div>
-          <div className={styles.right}>Right</div>
+          <div className={styles.right}>
+            <RightPanel />
+          </div>
         </div>
       </div>
     </div>
