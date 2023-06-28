@@ -74,11 +74,11 @@ const Login: FC<IProps> = () => {
     },
     {
       manual: true,
-      onSuccess: (res) => {
+      onSuccess: async (res) => {
         const { token = '' } = res
         setToken(token)
+        await message.success('登录成功！')
         nav(MANAGE_INDEX_PATH)
-        message.success('登录成功！')
       }
     }
   )

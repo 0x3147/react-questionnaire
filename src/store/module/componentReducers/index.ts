@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import produce from 'immer'
-import { ComponentPropsType } from '@/components/QuestionComponents'
 
+import type { ComponentPropsType } from '@/components/QuestionComponents'
 import type { PayloadAction } from '@reduxjs/toolkit'
 
 export interface IComponentInfo {
@@ -50,10 +50,34 @@ export const componentSlice = createSlice({
         }
         draft.selectedId = newComponent.fe_id
       }
+    ),
+    changeComponentProps: produce(
+      (
+        draft: IComponentState,
+        {
+          payload
+        }: PayloadAction<{ fe_id: string; newProps: ComponentPropsType }>
+      ) => {
+        const { fe_id, newProps } = payload
+        // 找到当前要修改组件
+        const currentComponent = draft.componentList.find(
+          (c) => c.fe_id === fe_id
+        )
+        if (currentComponent) {
+          currentComponent.props = {
+            ...currentComponent.props,
+            ...newProps
+          }
+        }
+      }
     )
   }
 })
 
-export const { resetComponents, changeSelectedId, addComponent } =
-  componentSlice.actions
+export const {
+  resetComponents,
+  changeSelectedId,
+  addComponent,
+  changeComponentProps
+} = componentSlice.actions
 export default componentSlice.reducer
